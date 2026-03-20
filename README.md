@@ -28,11 +28,15 @@ talona-linux-utility/
 
 ## Clone o repositório
 
+```bash
 git clone [https://github.com/seu-usuario/talona-linux-utility.git](https://github.com/seu-usuario/talona-linux-utility.git)
 cd talona-linux-utility
+```
 
-## Execute o utilitário:
+## Execute o utilitário
 
 O script precisa de permissões de superusuário para aplicar as alterações no sistema:
 
+```bash
 sudo python3 main.py
+```
