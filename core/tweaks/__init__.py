@@ -1,6 +1,6 @@
-from . import pacman_colors
-from . import dnf_optimize
-from . import fix_time
+from .arch import pacman_colors
+from .fedora import dnf_optimize
+from .shared import fix_time
 
 # Esta lista é o que o menu vai ler
 ALL_TWEAKS = [

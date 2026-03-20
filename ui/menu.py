@@ -1,51 +1,23 @@
 import os
+import importlib
 from core.utils import get_distro
 
 def start_menu():
-    distro = get_distro()
+    distro = get_distro() # Retorna 'arch' ou 'fedora'
     
     while True:
         print(f"\n=== 🐧 Talona Linux Utility ({distro.upper()}) ===")
-        print("1. Atualizar Sistema (Upgrade)")
+        print("1. Atualizar Sistema")
         print("2. Aplicar Tweaks (Otimizações)")
-        print("3. Corrigir Horário (Dual Boot RTC)")
         print("0. Sair")
 
         escolha = input("\nEscolha: ")
 
         if escolha == "1":
-            cmd = "dnf upgrade -y" if distro == "fedora" else "pacman -Syu --noconfirm"
-            print(f"🚀 Rodando {cmd}...")
-            os.system(f"sudo {cmd}")
+            executar_update(distro)
 
         elif escolha == "2":
-            try:
-                from core.tweaks import ALL_TWEAKS
-                
-                if not ALL_TWEAKS:
-                    print("⚠️  A lista ALL_TWEAKS está vazia.")
-                    continue
-
-                print("\n--- 🛠️  Central de Tweaks Linux ---")
-                for i, t in enumerate(ALL_TWEAKS, 1):
-                    print(f"{i}. {t.INFO['name']} - {t.INFO['desc']}")
-                
-                print("0. Voltar")
-                op = input("\nEscolha o tweak: ")
-                
-                if op != "0":
-                    idx = int(op) - 1
-                    ALL_TWEAKS[idx].run()
-            
-            except (ImportError, AttributeError) as e:
-                print(f"❌ Erro ao carregar tweaks: {e}")
-            except (ValueError, IndexError):
-                print("❌ Opção inválida!")
-
-        elif escolha == "3":
-            print("⏳ Ajustando RTC para Local Time...")
-            os.system("sudo timedatectl set-local-rtc 1 --adjust-system-clock")
-            print("✅ Horário sincronizado com o padrão do Windows.")
+            carregar_tweaks_por_pasta(distro)
 
         elif escolha == "0":
             print("Saindo... 👋")
@@ -53,18 +25,75 @@ def start_menu():
         else:
             print("❌ Opção inválida!")
 
-def show_tweaks_menu(tweaks):
-    while True:
-        print("\n--- 🛠️  Central de Tweaks Linux ---")
-        for i, t in enumerate(tweaks, 1):
-            print(f"{i}. {t.INFO['name']} - {t.INFO['desc']}")
-        print("0. Voltar")
+def executar_update(distro):
+    """Carrega o script de update da pasta core/updates/"""
+    try:
+        # Importação dinâmica para evitar erro de 'resolver importação'
+        if distro == "arch":
+            module = importlib.import_module("core.updates.arch_upd")
+        elif distro == "fedora":
+            module = importlib.import_module("core.updates.fedora_upd")
+        else:
+            print("❌ Distro não suportada para update automático.")
+            return
+            
+        module.run()
+    except ModuleNotFoundError:
+        print(f"❌ Erro: Script de update para {distro} não encontrado em core/updates/")
+    except Exception as e:
+        print(f"❌ Erro ao executar atualização: {e}")
 
-        op = input("\nEscolha o tweak: ")
-        if op == "0": break
-        
+def carregar_tweaks_por_pasta(distro):
+    """Carrega os tweaks das pastas core/tweaks/shared e core/tweaks/[distro]"""
+    try:
+        tweaks_disponiveis = []
+
+        # 1. Carrega tweaks Compartilhados (Shared)
         try:
-            idx = int(op) - 1
-            tweaks[idx].run()
-        except:
-            print("❌ Erro ao executar tweak.")
+            shared_time = importlib.import_module("core.tweaks.shared.fix_time")
+            tweaks_disponiveis.append(shared_time)
+        except ModuleNotFoundError:
+            pass
+
+        # 2. Carrega tweaks específicos da Distro atual
+        if distro == "arch":
+            try:
+                pacman_colors = importlib.import_module("core.tweaks.arch.pacman_colors")
+                tweaks_disponiveis.append(pacman_colors)
+                # Você pode adicionar mais aqui: clean_cache, fast_mirrors, etc.
+            except ModuleNotFoundError:
+                print("⚠️  Alguns tweaks do Arch não foram encontrados.")
+
+        elif distro == "fedora":
+            try:
+                dnf_opt = importlib.import_module("core.tweaks.fedora.dnf_optimize")
+                tweaks_disponiveis.append(dnf_opt)
+            except ModuleNotFoundError:
+                print("⚠️  Alguns tweaks do Fedora não foram encontrados.")
+
+        # Exibição do Menu de Tweaks
+        if not tweaks_disponiveis:
+            print("❌ Nenhum tweak encontrado nas pastas.")
+            return
+
+        print(f"\n--- 🛠️  Tweaks Disponíveis ({distro.title()}) ---")
+        for i, t in enumerate(tweaks_disponiveis, 1):
+            nome = t.INFO['name']
+            desc = t.INFO['desc']
+            print(f"{i}. {nome} - {desc}")
+        
+        print("0. Voltar")
+        op = input("\nSelecione o tweak: ")
+
+        if op != "0":
+            try:
+                idx = int(op) - 1
+                if 0 <= idx < len(tweaks_disponiveis):
+                    tweaks_disponiveis[idx].run()
+                else:
+                    print("❌ Opção inválida!")
+            except ValueError:
+                print("❌ Digite um número válido.")
+
+    except Exception as e:
+        print(f"❌ Erro geral no menu de tweaks: {e}")
