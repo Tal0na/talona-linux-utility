@@ -1,0 +1,28 @@
+{
+  "apps": [
+    {
+      "id": "vscode",
+      "name": "VS Code",
+      "arch": { "manager": "pacman", "pkg": "code" },
+      "fedora": { "manager": "dnf", "pkg": "code" }
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "arch": { "manager": "pacman", "pkg": "discord" },
+      "fedora": { "manager": "flatpak", "pkg": "com.discordapp.Discord" }
+    },
+    {
+      "id": "zen",
+      "name": "Zen Browser",
+      "arch": { "manager": "aur", "pkg": "zen-browser-bin" },
+      "fedora": { "manager": "flatpak", "pkg": "app.zen_browser.zen" }
+    },
+    {
+      "id": "feishin",
+      "name": "Feishin",
+      "arch": { "manager": "aur", "pkg": "feishin-bin" },
+      "fedora": { "manager": "flatpak", "pkg": "io.github.jeffvli.Feishin" }
+    }
+  ]
+}
