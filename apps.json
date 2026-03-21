@@ -2,9 +2,15 @@
   "apps": [
     {
       "id": "vscode",
-      "name": "VS Code",
-      "arch": { "manager": "pacman", "pkg": "code" },
+      "name": "Visual Studio Code",
+      "arch": { "manager": "aur", "pkg": "visual-studio-code-bin" },
       "fedora": { "manager": "dnf", "pkg": "code" }
+    },
+    {
+      "id": "feishin",
+      "name": "Feishin",
+      "arch": { "manager": "aur", "pkg": "feishin-bin" },
+      "fedora": { "manager": "flatpak", "pkg": "io.github.jeffvli.Feishin" }
     },
     {
       "id": "discord",
@@ -19,10 +25,43 @@
       "fedora": { "manager": "flatpak", "pkg": "app.zen_browser.zen" }
     },
     {
-      "id": "feishin",
-      "name": "Feishin",
-      "arch": { "manager": "aur", "pkg": "feishin-bin" },
-      "fedora": { "manager": "flatpak", "pkg": "io.github.jeffvli.Feishin" }
+      "id": "steam",
+      "name": "Steam",
+      "arch": { "manager": "pacman", "pkg": "steam" },
+      "fedora": { "manager": "dnf", "pkg": "steam" }
+    },
+    {
+      "id": "github-desktop",
+      "name": "GitHub Desktop",
+      "arch": { "manager": "aur", "pkg": "github-desktop-bin" },
+      "fedora": {
+        "manager": "flatpak",
+        "pkg": "io.github.shubham_mauri.github-desktop"
+      }
+    },
+    {
+      "id": "alacritty",
+      "name": "Alacritty",
+      "arch": { "manager": "pacman", "pkg": "alacritty" },
+      "fedora": { "manager": "dnf", "pkg": "alacritty" }
+    },
+    {
+      "id": "mpv",
+      "name": "MPV",
+      "arch": { "manager": "pacman", "pkg": "mpv" },
+      "fedora": { "manager": "dnf", "pkg": "mpv" }
+    },
+    {
+      "id": "obs",
+      "name": "OBS Studio",
+      "arch": { "manager": "pacman", "pkg": "obs-studio" },
+      "fedora": { "manager": "flatpak", "pkg": "com.obsproject.Studio" }
+    },
+    {
+      "id": "easyeffects",
+      "name": "Easy Effects",
+      "arch": { "manager": "pacman", "pkg": "easyeffects" },
+      "fedora": { "manager": "flatpak", "pkg": "com.github.wwmm.easyeffects" }
     }
   ]
 }

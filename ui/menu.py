@@ -9,7 +9,8 @@ def start_menu():
         print(f"\n=== 🐧 Talona Linux Utility ({distro.upper()}) ===")
         print("1. Atualizar Sistema")
         print("2. Aplicar Tweaks (Otimizações)")
-        print("3. Instalar Pacotes (JSON)") # Opção 3 aqui!
+        print("3. Instalar Pacotes (JSON)")
+        print("4. Aplicar Configurações (Dotfiles)") # NOVA OPÇÃO!
         print("0. Sair")
 
         escolha = input("\nEscolha: ")
@@ -29,6 +30,18 @@ def start_menu():
                 print("❌ Erro: Script 'core/apps/installer.py' não encontrado.")
             except Exception as e:
                 print(f"❌ Erro no instalador: {e}")
+
+        elif escolha == "4":
+            try:
+                module = importlib.import_module("core.apps.configurator")
+                module.run()
+            except ModuleNotFoundError:
+                print("❌ Erro: Script 'core/apps/configurator.py' não encontrado.")
+            except Exception as e:
+                print(f"❌ Erro ao configurar: {e}")
+
+        elif escolha == "0":
+            break
 
         elif escolha == "0":
             print("Saindo... 👋")
