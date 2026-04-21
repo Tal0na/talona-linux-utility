@@ -18,6 +18,10 @@ APPS=(
     "mpv|MPV|pacman|mpv"
     "obs|OBS Studio|pacman|obs-studio"
     "easyeffects|Easy Effects|pacman|easyeffects"
+    "helium|Helium Browser|aur|helium-browser-bin"
+    "shelly|Shelly|aur|shelly-bin"
+    "kitty|Kitty Terminal|pacman|kitty"
+    "audacity|Audacity|pacman|audacity"
 )
 
 _get_aur_helper() {
